@@ -1,0 +1,17 @@
+<!-- extend from base layout -->
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+    {{ super() }}
+    <link href="{{url_for('static', filename='form.css')}}" rel="stylesheet" media="screen" />
+{% endblock %}
+
+
+{% block content %}
+  <h1>Send Hello World Tweet</h1>
+  <form action="" method="post" name="tweet">
+      {{ form.hidden_tag() }}
+      <p><label for="tweet">Tweet</label>{{ form.tweet(size=140,value=message) }}<br></p>
+      <p class="submit"><input type="submit" value="Tweet"></p>
+  </form>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}User timeline example{% endblock %}
+
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="{{url_for('static', filename='bootbox.js')}}"></script>
+<script type="text/javascript">
+window.onload=function() {
+	var message = document.getElementById("flash_message")
+	
+	if (message != null) {
+		bootbox.alert({size:'small', message: message.innerHTML});
+	}
+};
+</script>
+{% endblock %}
+
+{% block content %}
+
+	{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+            <p id="flash_message" hidden>{{ message }} </p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid" role="main">
+        <h1>Tweet list</h1>
+
+        <table class="table table-hover table-condensed">
+            <thead><tr>
+                <th>Tweeted at</th>
+                <th>Tweet text</th>
+                <th>Mentions</th>
+            </tr></thead>
+            <tbody>
+                {% for tweet in tweets %}
+                    <tr>
+                        <td>{{tweet.created_at}}</td>
+                        <td>{{tweet.text}}</td>
+                        
+                        <td>
+                        		{% for user in tweet.entities.user_mentions %}
+                        		<a href="/tweet/{{user.screen_name}}">@{{user.screen_name}}</a>
+                        		{% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
